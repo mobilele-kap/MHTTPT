@@ -82,6 +82,7 @@ class SocketServer:
         self.socket.bind((self.host, self.port))
         self.socket.listen(10)
         self.socket.setblocking(False)
+        asyncio.create_task(self._loop())
 
 if __name__ == '__main__':
     async def main():
