@@ -74,7 +74,7 @@ class SocketServer:
             await asyncio.sleep(1)
         task_receiver.cancel()
 
-    async def start(self):
+    def start(self):
         """Запуск низкоуровневого сервера"""
         self.is_work = True
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -87,6 +87,6 @@ class SocketServer:
 if __name__ == '__main__':
     async def main():
         server = SocketServer()
-        await server.start()
+        server.start()
 
     asyncio.run(main())
