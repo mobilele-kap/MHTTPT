@@ -5,8 +5,8 @@ import json
 
 class HTTPClient:
 
-    def __init__(self, base_url: str, token: str, interval_check=1):
-        self.base_url = base_url
+    def __init__(self, host: str, token: str, interval_check: int = 1):
+        self.host = host
         self.token = token
         self.headers = {
             "token": self.token,
@@ -18,7 +18,7 @@ class HTTPClient:
 
     async def ping(self):
         """/ping"""
-        url = f"{self.base_url}/ping"
+        url = f"{self.host}/ping"
 
         async with aiohttp.ClientSession() as session:
             try:
@@ -43,7 +43,7 @@ class HTTPClient:
 
     async def create_connection(self, host: str, port: int):
         """Создание подключения через /connect"""
-        url = f"{self.base_url}/connect"
+        url = f"{self.host}/connect"
         params = {"host": host, "port": port}
 
         async with aiohttp.ClientSession() as session:
@@ -65,7 +65,7 @@ class HTTPClient:
 
     async def delete_connection(self, connect_id: int):
         """Удаление подключения через /disconnect"""
-        url = f"{self.base_url}/disconnect"
+        url = f"{self.host}/disconnect"
         params = {"connect_id": connect_id}
 
         async with aiohttp.ClientSession() as session:
@@ -91,7 +91,7 @@ class HTTPClient:
             connect_id: ID подключения
             tx_list: список данных для обработки
         """
-        url = f"{self.base_url}/d"
+        url = f"{self.host}/d"
         params = {
             'connect_id': connect_id
         }
@@ -113,3 +113,6 @@ class HTTPClient:
             except Exception as e:
                 print(f"❌ Error: {e}")
                 return None
+
+    def start(self):
+        asyncio.create_task(self._loop_check)
